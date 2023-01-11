@@ -1,12 +1,13 @@
 import { useCallback, useState } from "react";
 
-interface IListItem {
+interface ITarefa {
+  id: number;
   title: string;
-  isSelected: boolean;
+  isCompleted: boolean;
 }
 
 export const Dashboard = () => {
-  const [lista, setLista] = useState<IListItem[]>([]);
+  const [lista, setLista] = useState<ITarefa[]>([]);
 
   const handleInputkeyDown: React.KeyboardEventHandler<HTMLInputElement> = useCallback((e) => {
     if (e.key === 'Enter') {
@@ -22,8 +23,9 @@ export const Dashboard = () => {
         return [
           ...oldLista,
           {
+            id: oldLista.length,
             title: value,
-            isSelected: false,
+            isCompleted: false,
           }
         ];
       });
@@ -35,24 +37,24 @@ export const Dashboard = () => {
       <p>Lista</p>
 
       <input onKeyDown={handleInputkeyDown} />
-      <p>{lista.filter((listItem) => listItem.isSelected).length}</p>
+      <p>{lista.filter((listItem) => listItem.isCompleted).length}</p>
 
       <ul>
         {lista.map((listItem) => {
-          return <li key={listItem.title}>
+          return <li key={listItem.id}>
             <input
               type="checkbox"
-              checked={listItem.isSelected}
+              checked={listItem.isCompleted}
               onChange={() => {
                 setLista((oldLista) => {
                   return oldLista.map(oldlistItem => {
-                    const newIsSelected = oldlistItem.title === listItem.title
-                    ? !oldlistItem.isSelected
-                    : oldlistItem.isSelected;
+                    const newisCompleted = oldlistItem.title === listItem.title
+                    ? !oldlistItem.isCompleted
+                    : oldlistItem.isCompleted;
                     
                     return {
                       ...oldlistItem,
-                      isSelected: newIsSelected,
+                      isCompleted: newisCompleted,
                     };
                   });
                 });
